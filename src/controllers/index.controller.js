@@ -11,15 +11,15 @@ const addMovieController = async (req, res) => {
 };
 
 const getMoviesController = async (req, res) => {
-  const { duration, genres } = req.params;
-  let random = false;
+  console.dir(req.query);
+  const { duration, genres } = req.query;
 
-  if (typeof duration === "undefined" && typeof genres === "undefined") {
-    random = true;
-  }
+  const genresParsed = JSON.parse(genres);
+  const durationParsed = Number(duration);
 
-  const movies = await getMovies(duration, genres, random);
-  res.send(movies);
+  const returningArray = await getMovies(durationParsed, genresParsed);
+
+  res.send(returningArray);
 };
 
 module.exports = { addMovieController, getMoviesController };
