@@ -1,12 +1,20 @@
 const jsonfile = require("jsonfile");
+const { getRandomNum } = require("../lib");
 const file = "./data/db.json";
 
 async function addNewMovie() {}
 
-async function getMovies() {
+async function getMovies(duration, genres, random) {
   try {
+    const returningArray = [];
     const readObject = await jsonfile.readFile(file);
-    return readObject;
+    if (random) {
+      const numberOfMovies = readObject.movies.length;
+      const randomIndex = getRandomNum(numberOfMovies);
+      returningArray.push(readObject.movies[randomIndex]);
+    }
+
+    return returningArray;
   } catch (error) {
     console.error(error);
   }

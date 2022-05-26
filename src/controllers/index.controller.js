@@ -11,7 +11,14 @@ const addMovieController = async (req, res) => {
 };
 
 const getMoviesController = async (req, res) => {
-  const movies = await getMovies();
+  const { duration, genres } = req.params;
+  let random = false;
+
+  if (typeof duration === "undefined" && typeof genres === "undefined") {
+    random = true;
+  }
+
+  const movies = await getMovies(duration, genres, random);
   res.send(movies);
 };
 
