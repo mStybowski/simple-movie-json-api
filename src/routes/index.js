@@ -1,5 +1,5 @@
-import index from './index.routes.js';
+const index = require("./index.routes.js");
 
-export default (app) => {
-  app.use('/', index);
+module.exports = (app) => {
+  app.use("/", index);
 };

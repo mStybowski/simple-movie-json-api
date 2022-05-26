@@ -1,9 +1,9 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import mountRoutes from './routes/index.js';
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const mountRoutes = require("./routes/index.js");
 
-const PORT = 3003
+const PORT = 3003;
 
 const server = express();
 server.use(bodyParser.json());
@@ -25,10 +25,10 @@ function startServer() {
 function stopServer() {
   return new Promise((resolve) =>
     server.close(() => {
-      console.log('Server stopped');
+      console.log("Server stopped");
       resolve();
     })
   );
 }
 
-export { server, startServer, stopServer };
+module.exports = { server, startServer, stopServer };
