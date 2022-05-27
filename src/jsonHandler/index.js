@@ -1,16 +1,52 @@
 const jsonfile = require("jsonfile");
 const file = "./data/db.json";
 
+async function addMovie(req) {
+  const DBObject = await fetchDB();
+  const { movies: oldMovies } = DBObject;
+  const newId = oldMovies.length + 1;
+
+  console.dir(req.body);
+
+  const { genres, title, year, runtime, director } = req.body;
+
+  const actors = req.body.actors;
+  const plot = req.body.plot;
+  const posterUrl = req.body.posterUrl;
+
+  const newMovieObject = {
+    id: newId,
+    title,
+    year,
+    runtime,
+    genres,
+    director,
+    ...(actors && { actors }),
+    ...(plot && { plot }),
+    ...(posterUrl && { posterUrl }),
+  };
+
+  const newMovies = oldMovies.concat(newMovieObject);
+  DBObject.movies = newMovies;
+  try {
+    await jsonfile.writeFile(file, DBObject);
+    return true;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+async function fetchDB() {
+  try {
+    const moviesObject = await jsonfile.readFile(file);
+    return moviesObject;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 const getMovies = async (duration, genres) => {
   // TODO: provide handler when neither duration nor genres given
-  const fetchMovies = async () => {
-    try {
-      const moviesObject = await jsonfile.readFile(file);
-      return moviesObject.movies;
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const getGenreScore = (movie) => {
     let score = 0;
@@ -58,7 +94,7 @@ const getMovies = async (duration, genres) => {
     }
   };
 
-  const allMovies = await fetchMovies();
+  const { movies: allMovies } = await fetchDB();
   const genredMovies = filterByGenre(allMovies);
   const durationFiltered = filterByDuration(genredMovies);
   const returningMovies = removeDuplicates(durationFiltered);
@@ -66,6 +102,4 @@ const getMovies = async (duration, genres) => {
   return returningMovies;
 };
 
-async function addNewMovie() {}
-
-module.exports = { addNewMovie, getMovies };
+module.exports = { addMovie, getMovies };

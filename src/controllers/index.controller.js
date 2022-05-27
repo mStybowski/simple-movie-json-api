@@ -1,13 +1,8 @@
-// - a list of genres (only predefined ones from db file) (required, array of predefined strings)
-// - title (required, string, max 255 characters)
-// - year (required, number)
-// - runtime (required, number)
-// - director (required, string, max 255 characters)
-
-const { getMovies } = require("../jsonHandler/index.js");
+const { getMovies, addMovie } = require("../jsonHandler/index.js");
 
 const addMovieController = async (req, res) => {
-  res.send("Add");
+  await addMovie(req);
+  res.send("Movie added");
 };
 
 const getMoviesController = async (req, res) => {
