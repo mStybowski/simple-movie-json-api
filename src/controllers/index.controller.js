@@ -1,7 +1,8 @@
-const { getMovies, addMovie } = require("../jsonHandler/index.js");
+const { getMovies, getDBObject, saveToDb } = require("../jsonHandler/index.js");
 
 const addMovieController = async (req, res) => {
-  await addMovie(req);
+  const newMovieObject = await getDBObject(req);
+  saveToDb(newMovieObject);
   res.send("Movie added");
 };
 

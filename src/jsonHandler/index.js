@@ -7,7 +7,7 @@ const getAvailableGenres = async () => {
   return genres;
 };
 
-async function addMovie(req) {
+async function getDBObject(req) {
   const DBObject = await fetchDB();
   const { movies: oldMovies } = DBObject;
   const newId = oldMovies.length + 1;
@@ -32,8 +32,12 @@ async function addMovie(req) {
 
   const newMovies = oldMovies.concat(newMovieObject);
   DBObject.movies = newMovies;
+  return DBObject;
+}
+
+async function saveToDb(data) {
   try {
-    await jsonfile.writeFile(file, DBObject);
+    await jsonfile.writeFile(file, data);
     return true;
   } catch (error) {
     throw new Error(error);
@@ -60,7 +64,7 @@ const getMovies = async (rawDuration, rawGenres) => {
     return getRandomMovie();
   }
 
-  const duration = rawDuration ? JSON.parse(rawDuration) : rawDuration;
+  const duration = rawDuration ? Number(rawDuration) : rawDuration;
   const genres = rawGenres ? rawGenres.split(",") : rawGenres;
 
   const getGenreScore = (movie) => {
@@ -115,4 +119,4 @@ const getMovies = async (rawDuration, rawGenres) => {
   return queriedMovies;
 };
 
-module.exports = { getAvailableGenres, addMovie, getMovies };
+module.exports = { getAvailableGenres, getDBObject, getMovies, saveToDb };
