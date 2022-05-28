@@ -1,12 +1,16 @@
 const jsonfile = require("jsonfile");
+const { getRandomNum } = require("../lib");
 const file = "./data/db.json";
+
+const getAvailableGenres = async () => {
+  const { genres } = await fetchDB();
+  return genres;
+};
 
 async function addMovie(req) {
   const DBObject = await fetchDB();
   const { movies: oldMovies } = DBObject;
   const newId = oldMovies.length + 1;
-
-  console.dir(req.body);
 
   const { genres, title, year, runtime, director } = req.body;
 
@@ -45,8 +49,19 @@ async function fetchDB() {
   }
 }
 
-const getMovies = async (duration, genres) => {
-  // TODO: provide handler when neither duration nor genres given
+async function getRandomMovie() {
+  const { movies } = await fetchDB();
+  const randomIndex = getRandomNum(movies.length);
+  return movies[randomIndex];
+}
+
+const getMovies = async (rawDuration, rawGenres) => {
+  if (!rawDuration && !rawGenres) {
+    return getRandomMovie();
+  }
+
+  const duration = rawDuration ? JSON.parse(rawDuration) : rawDuration;
+  const genres = rawGenres ? rawGenres.split(",") : rawGenres;
 
   const getGenreScore = (movie) => {
     let score = 0;
@@ -57,8 +72,6 @@ const getMovies = async (duration, genres) => {
     });
     return score;
   };
-
-  const removeDuplicates = (movies) => movies; // TODO
 
   const filterByGenre = (movies) => {
     if (typeof genres === "undefined") {
@@ -95,11 +108,11 @@ const getMovies = async (duration, genres) => {
   };
 
   const { movies: allMovies } = await fetchDB();
-  const genredMovies = filterByGenre(allMovies);
-  const durationFiltered = filterByDuration(genredMovies);
-  const returningMovies = removeDuplicates(durationFiltered);
 
-  return returningMovies;
+  const genredMovies = filterByGenre(allMovies);
+  const queriedMovies = filterByDuration(genredMovies);
+
+  return queriedMovies;
 };
 
-module.exports = { addMovie, getMovies };
+module.exports = { getAvailableGenres, addMovie, getMovies };

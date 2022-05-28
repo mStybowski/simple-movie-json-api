@@ -1,5 +1,5 @@
 const express = require("express");
-const { validateData } = require("../middleware/index.js");
+const { validatePostData, validateGetData } = require("../middleware/index.js");
 const {
   addMovieController,
   getMoviesController,
@@ -7,7 +7,7 @@ const {
 
 const router = express.Router();
 
-router.post("/add", validateData, addMovieController);
-router.get("/get", getMoviesController);
+router.post("/add", validatePostData, addMovieController);
+router.get("/get", validateGetData, getMoviesController);
 
 module.exports = router;

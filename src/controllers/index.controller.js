@@ -6,14 +6,9 @@ const addMovieController = async (req, res) => {
 };
 
 const getMoviesController = async (req, res) => {
-  console.dir(req.query);
   const { duration, genres } = req.query;
 
-  const genresParsed = JSON.parse(genres);
-  const durationParsed = Number(duration);
-
-  const returningArray = await getMovies(durationParsed, genresParsed);
-
+  const returningArray = await getMovies(duration, genres);
   res.send(returningArray);
 };
 
