@@ -49,14 +49,18 @@ async function fetchDB() {
     const moviesObject = await jsonfile.readFile(file);
     return moviesObject;
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
   }
 }
 
 async function getRandomMovie() {
-  const { movies } = await fetchDB();
-  const randomIndex = getRandomNum(movies.length);
-  return movies[randomIndex];
+  try {
+    const { movies } = await fetchDB();
+    const randomIndex = getRandomNum(movies.length);
+    return movies[randomIndex];
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 const getMovies = async (rawDuration, rawGenres) => {
