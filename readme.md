@@ -36,6 +36,18 @@ JSON responses:
     "error": "error message"
 }
 ```
+In case of missing attributes you have proper info:
+```
+{
+    "errors": [
+        {
+            "msg": "No title field",
+            "param": "title",
+            "location": "body"
+        }
+    ]
+}
+```
 
 - `GET /movies`
 
