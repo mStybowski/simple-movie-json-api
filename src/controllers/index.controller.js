@@ -6,16 +6,12 @@ const addMovieController = async (req, res) => {
     const newMovieObject = await getDBObject(req);
     try {
       saveToDb(newMovieObject);
-      res.status(STATUS_CODES.CREATED).send("Success: Movie added");
+      res.status(STATUS_CODES.CREATED).json({ success: "Movie added" });
     } catch (error) {
-      res
-        .status(STATUS_CODES.INTERNAL_ERROR)
-        .send(`${error.name}: ${error.message}`);
+      res.status(STATUS_CODES.INTERNAL_ERROR).json({ error: error.message });
     }
   } catch (error) {
-    res
-      .status(STATUS_CODES.BAD_REQUEST)
-      .send(`${error.name}: ${error.message}`);
+    res.status(STATUS_CODES.BAD_REQUEST).json({ error: error.message });
   }
 };
 
@@ -26,9 +22,7 @@ const getMoviesController = async (req, res) => {
     const returningArray = await getMovies(duration, genres);
     res.status(STATUS_CODES.OK).send(returningArray);
   } catch (error) {
-    res
-      .status(STATUS_CODES.BAD_REQUEST)
-      .send(`${error.name}: ${error.message}`);
+    res.status(STATUS_CODES.BAD_REQUEST).json({ error: error.message });
   }
 };
 

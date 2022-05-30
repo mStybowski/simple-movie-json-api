@@ -10,7 +10,7 @@ const {
 
 const router = express.Router();
 
-router.post("/add", validatePostData, addMovieController);
-router.get("/get", validateGetData, getMoviesController);
+router.post("/movies", validatePostData, addMovieController);
+router.get("/movies", validateGetData, getMoviesController);
 
 module.exports = router;
