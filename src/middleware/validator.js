@@ -46,6 +46,8 @@ const validatePostData = async (req, res, next) => {
         .isString()
         .withMessage("Title should be string")
         .notEmpty()
+        .custom((value) => value.length <= 255)
+        .withMessage("Max length is 255 chars")
         .run(req);
 
       // year
