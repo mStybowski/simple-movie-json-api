@@ -1,4 +1,4 @@
-const { check, validationResult } = require("express-validator");
+const { check, query, validationResult } = require("express-validator");
 const { getAvailableGenres } = require("../jsonHandler/index.js");
 
 const validatePostData = async (req, res, next) => {
@@ -124,7 +124,7 @@ const validateGetData = async (req, res, next) => {
     // Params validation
 
     // duration
-    await check("duration")
+    await query("duration")
       .optional()
       .isString()
       .notEmpty()
@@ -132,7 +132,7 @@ const validateGetData = async (req, res, next) => {
       .run(req);
 
     // genres
-    await check("genres")
+    await query("genres")
       .optional()
       .isString()
       .notEmpty()
