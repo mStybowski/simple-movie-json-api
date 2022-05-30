@@ -1,5 +1,7 @@
 # JSON-based DB API
 
+[![Pipeline](https://github.com/mStybowski/netguru-recruitment-task/actions/workflows/actions.yml/badge.svg)](https://github.com/mStybowski/netguru-recruitment-task/actions/workflows/actions.yml)
+
 **🛠️Tech stack:** [Node.js](https://nodejs.org/en/), [Express.js](https://expressjs.com/), [Docker](https://www.docker.com/)
 
 This is a simple JSON-based DB API that enabled to save and retrieve movie objects from JSON file.
