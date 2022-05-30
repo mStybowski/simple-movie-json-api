@@ -67,8 +67,6 @@ async function getRandomMovie() {
 }
 
 const getMovies = async (rawDuration, rawGenres) => {
-  console.log(rawDuration);
-  console.log(rawGenres);
   if (!rawDuration && !rawGenres) {
     return getRandomMovie();
   }
