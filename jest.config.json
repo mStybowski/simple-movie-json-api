@@ -1,0 +1,6 @@
+{
+    "collectCoverage": true,
+    "moduleFileExtensions": ["js", "mjs"],
+    "testRegex": "((\\.|/*.)(test))\\.js?$",
+    "reporters": ["default", ["jest-junit", {"outputName": "report.xml"}]]
+  }
