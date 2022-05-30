@@ -1,5 +1,8 @@
 const express = require("express");
-const { validatePostData, validateGetData } = require("../middleware/index.js");
+const {
+  validatePostData,
+  validateGetData,
+} = require("../middleware/validator.js");
 const {
   addMovieController,
   getMoviesController,

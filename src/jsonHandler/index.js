@@ -3,36 +3,39 @@ const { getRandomNum } = require("../lib");
 const file = "./data/db.json";
 
 const getAvailableGenres = async () => {
-  const { genres } = await fetchDB();
-  return genres;
+  try {
+    const { genres } = await fetchDB();
+    return genres;
+  } catch (error) {
+    throw new Error("Could not fetch available genres from DB.");
+  }
 };
 
 async function getDBObject(req) {
-  const DBObject = await fetchDB();
-  const { movies: oldMovies } = DBObject;
-  const newId = oldMovies.length + 1;
+  try {
+    const { genres, title, year, runtime, director, actors, plot, posterUrl } =
+      req.body;
+    const DBObject = await fetchDB();
+    const { movies: oldMovies } = DBObject;
+    const newId = oldMovies.length + 1;
+    const newMovieObject = {
+      id: newId,
+      title,
+      year,
+      runtime,
+      genres,
+      director,
+      ...(actors && { actors }),
+      ...(plot && { plot }),
+      ...(posterUrl && { posterUrl }),
+    };
 
-  const { genres, title, year, runtime, director } = req.body;
-
-  const actors = req.body.actors;
-  const plot = req.body.plot;
-  const posterUrl = req.body.posterUrl;
-
-  const newMovieObject = {
-    id: newId,
-    title,
-    year,
-    runtime,
-    genres,
-    director,
-    ...(actors && { actors }),
-    ...(plot && { plot }),
-    ...(posterUrl && { posterUrl }),
-  };
-
-  const newMovies = oldMovies.concat(newMovieObject);
-  DBObject.movies = newMovies;
-  return DBObject;
+    const newMovies = oldMovies.concat(newMovieObject);
+    DBObject.movies = newMovies;
+    return DBObject;
+  } catch (error) {
+    throw new Error("Could not create movie based on provided data.");
+  }
 }
 
 async function saveToDb(data) {
@@ -40,7 +43,7 @@ async function saveToDb(data) {
     await jsonfile.writeFile(file, data);
     return true;
   } catch (error) {
-    throw new Error(error);
+    throw new Error("Could not save movie to DB.");
   }
 }
 
@@ -49,7 +52,7 @@ async function fetchDB() {
     const moviesObject = await jsonfile.readFile(file);
     return moviesObject;
   } catch (error) {
-    throw new Error(error);
+    throw new Error("Could not fetch data from DB.");
   }
 }
 
@@ -59,7 +62,7 @@ async function getRandomMovie() {
     const randomIndex = getRandomNum(movies.length);
     return movies[randomIndex];
   } catch (error) {
-    throw new Error(error);
+    throw new Error("Could not get random movie.");
   }
 }
 
@@ -115,12 +118,16 @@ const getMovies = async (rawDuration, rawGenres) => {
     }
   };
 
-  const { movies: allMovies } = await fetchDB();
+  try {
+    const { movies: allMovies } = await fetchDB();
 
-  const genredMovies = filterByGenre(allMovies);
-  const queriedMovies = filterByDuration(genredMovies);
+    const genredMovies = filterByGenre(allMovies);
+    const queriedMovies = filterByDuration(genredMovies);
 
-  return queriedMovies;
+    return queriedMovies;
+  } catch (error) {
+    throw new Error("Could not get queried movies.");
+  }
 };
 
 module.exports = { getAvailableGenres, getDBObject, getMovies, saveToDb };
