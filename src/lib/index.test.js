@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-env jest */
 const { getRandomNum } = require("./index.js");
 
 test("returns random number within 0 to max", () => {

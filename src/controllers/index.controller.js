@@ -26,7 +26,9 @@ const getMoviesController = async (req, res) => {
     const returningArray = await getMovies(duration, genres);
     res.status(STATUS_CODES.OK).send(returningArray);
   } catch (error) {
-    res.status(STATUS_CODES.BAD_REQUEST).send(error);
+    res
+      .status(STATUS_CODES.BAD_REQUEST)
+      .send(`${error.name}: ${error.message}`);
   }
 };
 

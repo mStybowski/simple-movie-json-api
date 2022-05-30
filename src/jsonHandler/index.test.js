@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-env jest */
 const { getMovies, getDBObject } = require("./index.js");
 
 test("returns movie with duration +/- 10", async () => {
@@ -14,7 +14,7 @@ test("returns movie with duration +/- 10", async () => {
 });
 
 test("returns movies with proper genre", async () => {
-  const duration = 120;
+  const duration = "120";
   const genre = "Action";
 
   const returnedMovies = await getMovies(duration, genre);

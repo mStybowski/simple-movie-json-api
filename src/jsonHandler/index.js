@@ -7,7 +7,7 @@ const getAvailableGenres = async () => {
     const { genres } = await fetchDB();
     return genres;
   } catch (error) {
-    throw new Error("Could not fetch available genres from DB.");
+    throw Error();
   }
 };
 
@@ -34,7 +34,7 @@ async function getDBObject(req) {
     DBObject.movies = newMovies;
     return DBObject;
   } catch (error) {
-    throw new Error("Could not create movie based on provided data.");
+    throw new Error("Could not create DB Object.");
   }
 }
 
@@ -52,7 +52,7 @@ async function fetchDB() {
     const moviesObject = await jsonfile.readFile(file);
     return moviesObject;
   } catch (error) {
-    throw new Error("Could not fetch data from DB.");
+    throw Error();
   }
 }
 
@@ -67,6 +67,8 @@ async function getRandomMovie() {
 }
 
 const getMovies = async (rawDuration, rawGenres) => {
+  console.log(rawDuration);
+  console.log(rawGenres);
   if (!rawDuration && !rawGenres) {
     return getRandomMovie();
   }
@@ -120,7 +122,6 @@ const getMovies = async (rawDuration, rawGenres) => {
 
   try {
     const { movies: allMovies } = await fetchDB();
-
     const genredMovies = filterByGenre(allMovies);
     const queriedMovies = filterByDuration(genredMovies);
 
