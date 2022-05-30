@@ -27,7 +27,7 @@ test("returns movies with proper genre", async () => {
 test("Creates proper DB object", async () => {
   const mockRequest = {
     body: {
-      duration: 120,
+      duration: "120",
       genres: "Action, Comedy",
       title: "someTitle",
       director: "someDirector",
